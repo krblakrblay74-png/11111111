@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتب أضواء كربلاء</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <section id="screen-admin-login" class="app-section">
+        <div class="login-box">
+            <h2>مكتب أضواء كربلاء (الإدارة)</h2>
+            <p>أدخل الرمز السري للمدير</p>
+            <input type="text" style="display:none" autocomplete="off">
+            <input type="password" style="display:none" autocomplete="off">
+            
+            <input type="password" id="adminPinInput" placeholder="الرمز السري" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+            <button onclick="checkAdminLogin()" class="btn-primary">دخول المدير</button>
+        </div>
+    </section>
+
+    <section id="screen-client-login" class="app-section">
+        <div class="login-box">
+            <h2>معاينة ديونك</h2>
+            <p>أهلاً بك: <span id="client-welcome-name" style="color:#d4af37; font-weight:bold;"></span></p>
+            
+            <input type="text" style="display:none" autocomplete="off">
+            <input type="password" style="display:none" autocomplete="off">
+
+            <input type="password" id="clientPassInput" placeholder="أدخل كلمة المرور الخاصة بك" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+            <button onclick="checkClientLogin()" class="btn-primary">عرض الكشف</button>
+        </div>
+    </section>
+
+    <section id="screen-client-view" class="app-section">
+        <header class="app-header">
+            <div><i class="fas fa-user-lock"></i> كشف حساب: <span id="cvName"></span></div>
+        </header>
+        <div class="container view-mode">
+            <div class="report-summary">
+                <div class="box sale">مبيعات: <span id="cvSales">0</span></div>
+                <div class="box paid">واصل: <span id="cvPaid">0</span></div>
+                <div class="box debt">باقي: <span id="cvDebt">0</span></div>
+            </div>
+            <h3>سجل الحركات</h3>
+            <div class="transactions-list" id="cvTransList"></div>
+            <div style="text-align:center; margin-top:20px; color:#999; font-size:12px;">نظام مكتب أضواء كربلاء</div>
+        </div>
+    </section>
+
+    <section id="screen-admin-app" class="app-section">
+        
+        <div id="splash-screen">
+            <div class="splash-content">
+                <h1 class="glow-text">مكتب أضواء كربلاء</h1>
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <header class="app-header">
+            <div id="current-customer-display">الزبون: <span id="headerCustomerName">...</span></div>
+            <button onclick="clearSelection()" class="btn-xs">تغيير</button>
+        </header>
+
+        <div class="app-container">
+            <div id="tab-customers" class="tab-content active">
+                <div class="search-hero">
+                    <h2>الزبائن</h2>
+                    
+                    <div style="background:var(--danger); color:white; padding:15px; border-radius:12px; text-align:center; margin-bottom:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <span style="display:block; font-size:14px; opacity:0.9;">مجموع ديون النظام الكلي</span>
+                        <span id="sysTotalDebt" style="display:block; font-size:2rem; font-weight:bold; margin-top:5px;">0</span>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="customerSearchInput" placeholder="بحث..." oninput="filterCustomers()" autocomplete="off">
+                        <button onclick="openAddCustomerModal()" class="btn-icon"><i class="fas fa-user-plus"></i></button>
+                    </div>
+                </div>
+                <div class="customer-list" id="customerListContainer"></div>
+            </div>
+
+            <div id="tab-invoice" class="tab-content">
+                <div class="section-title">بيع</div>
+                <div class="form-grid">
+                    <input type="text" id="itemName" placeholder="المادة" autocomplete="off">
+                    <div class="row-inputs">
+                        <input type="number" id="itemPrice" placeholder="السعر" autocomplete="off">
+                        <input type="number" id="itemQty" placeholder="العدد" value="1" autocomplete="off">
+                    </div>
+                    <button onclick="addItemToCart()" class="btn-add">إضافة</button>
+                </div>
+                <div class="cart-container">
+                    <table id="cartTable"><thead><tr><th>مادة</th><th>سعر</th><th>عدد</th><th>X</th></tr></thead><tbody></tbody></table>
+                </div>
+                <div class="invoice-footer">
+                    <div class="total-display">مجموع: <span id="cartTotal">0</span></div>
+                    <button onclick="saveInvoice()" class="btn-save">حفظ</button>
+                </div>
+            </div>
+
+            <div id="tab-payment" class="tab-content">
+                <div class="section-title">تسديد</div>
+                <div class="payment-card">
+                    <h2 id="currentDebtDisplay" class="debt-amount">0</h2>
+                    <input type="number" id="paymentInput" class="big-input" placeholder="المبلغ الواصل" autocomplete="off">
+                    <button onclick="processPayment()" class="btn-pay">تسديد</button>
+                </div>
+            </div>
+
+            <div id="tab-reports" class="tab-content">
+                <div class="section-title">إعدادات الزبون</div>
+                
+                <button onclick="printCustomerReport()" class="btn-info" style="margin-bottom:15px; width:100%;">
+                    طباعة كشف حساب <i class="fas fa-print"></i>
+                </button>
+
+                <div class="link-share-box">
+                    <p>رابط المعاينة للزبون:</p>
+                    <div style="display:flex; gap:5px;">
+                        <input type="text" id="customerShareLink" readonly onclick="this.select();">
+                        <button onclick="copyLink()" class="btn-info">نسخ</button>
+                    </div>
+                </div>
+
+                <div class="report-summary">
+                    <div class="box sale">مبيعات: <span id="repSales">0</span></div>
+                    <div class="box paid">واصل: <span id="repPaid">0</span></div>
+                    <div class="box debt">باقي: <span id="repDebt">0</span></div>
+                </div>
+                
+                <div class="transactions-list" id="transList"></div>
+                
+                <div class="danger-zone">
+                    <button onclick="deleteCustomer()" class="btn-danger">حذف الزبون (121)</button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="#" onclick="switchTab('tab-customers')" class="nav-item active"><i class="fas fa-users"></i><span>الزبائن</span></a>
+            <a href="#" onclick="switchTab('tab-invoice')" class="nav-item"><i class="fas fa-cart-plus"></i><span>بيع</span></a>
+            <a href="#" onclick="switchTab('tab-payment')" class="nav-item"><i class="fas fa-hand-holding-usd"></i><span>تسديد</span></a>
+            <a href="#" onclick="switchTab('tab-reports')" class="nav-item"><i class="fas fa-cogs"></i><span>إعدادات</span></a>
+        </nav>
+
+        <div id="addCustomerModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddCustomerModal()">&times;</span>
+                <h3>زبون جديد</h3>
+                <input type="text" style="display:none">
+                <input type="password" style="display:none">
+                
+                <input type="text" id="newCName" placeholder="الاسم" autocomplete="off">
+                <input type="text" id="newCPhone" placeholder="الهاتف" autocomplete="off">
+                
+                <select id="newCCurrency" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:8px; background:white; font-family:inherit;">
+                    <option value="IQD">دينار عراقي (د.ع)</option>
+                    <option value="USD">دولار أمريكي ($)</option>
+                </select>
+
+                <input type="password" id="newCPass" placeholder="كلمة مرور الزبون" autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+                <button onclick="confirmAddCustomer()" class="btn-primary">حفظ</button>
+            </div>
+        </div>
+    </section>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
