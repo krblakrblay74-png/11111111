@@ -1,0 +1,201 @@
+/* استيراد الخط */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+/* الألوان والمتغيرات */
+:root {
+    --primary: #2c3e50;  /* كحلي */
+    --accent: #d4af37;   /* ذهبي */
+    --bg: #f4f7f6;       /* خلفية فاتحة */
+    --white: #ffffff;
+    --success: #27ae60;  /* أخضر */
+    --danger: #c0392b;   /* أحمر */
+    --info: #2980b9;     /* أزرق */
+}
+
+/* إعدادات عامة */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+body { font-family: 'Cairo', sans-serif; background-color: var(--bg); margin: 0; padding: 0; direction: rtl; }
+
+/* --------------------------------------------------------
+   نظام الإخفاء الصارم
+-------------------------------------------------------- */
+.app-section {
+    display: none !important; 
+    min-height: 100vh;
+    padding-top: 60px; 
+    padding-bottom: 80px; 
+}
+
+.app-section.active-screen {
+    display: block !important; 
+}
+
+/* --------------------------------------------------------
+   شاشات تسجيل الدخول
+-------------------------------------------------------- */
+.login-box {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%; max-width: 380px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.login-box h2 { color: var(--primary); margin-top: 0; margin-bottom: 10px; }
+.login-box p { color: #666; margin-bottom: 20px; font-size: 14px; }
+.login-box button { margin-top: 20px; width: 100%; }
+
+/* --------------------------------------------------------
+   العناصر العامة
+-------------------------------------------------------- */
+.app-header {
+    position: fixed; top: 0; left: 0; right: 0; height: 60px;
+    background: var(--primary); color: white; padding: 0 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.container, .app-container { padding: 15px; max-width: 800px; margin: 0 auto; }
+
+input {
+    width: 100%; padding: 12px; margin-bottom: 10px;
+    border: 1px solid #ddd; border-radius: 8px;
+    font-size: 16px; text-align: center; font-family: inherit;
+    background: #fff; transition: 0.3s;
+}
+input:focus { border-color: var(--accent); }
+input[readonly] { background-color: #f9f9f9; color: #555; }
+
+button {
+    cursor: pointer; border: none; border-radius: 8px;
+    font-weight: bold; padding: 12px 20px; color: white;
+    font-family: inherit; transition: 0.2s; display: inline-flex;
+    justify-content: center; align-items: center; gap: 8px;
+}
+button:active { transform: scale(0.98); }
+
+.btn-primary { background: var(--primary); }
+.btn-add { background: var(--primary); width: 100%; }
+.btn-save { background: var(--accent); color: #000; width: 100%; }
+.btn-pay { background: var(--success); width: 100%; font-size: 1.2rem; }
+.btn-danger { background: var(--danger); width: 100%; }
+.btn-info { background: var(--info); }
+.btn-icon { width: 50px; background: var(--accent); padding: 0; font-size: 1.2rem; height: 46px;}
+.btn-xs { font-size: 12px; padding: 5px 12px; background: rgba(255,255,255,0.2); border-radius: 20px; }
+
+/* --------------------------------------------------------
+   القوائم والبطاقات
+-------------------------------------------------------- */
+.tab-content { display: none; animation: fadeIn 0.3s; }
+.tab-content.active { display: block; }
+
+.customer-item {
+    background: white; padding: 15px; border-radius: 12px;
+    margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03); cursor: pointer; border: 1px solid transparent;
+}
+.customer-item:hover { border-color: var(--accent); }
+
+.report-summary { display: flex; gap: 8px; margin-bottom: 20px; }
+.report-summary .box {
+    flex: 1; padding: 15px 5px; border-radius: 10px; text-align: center; color: white;
+    font-size: 13px; box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+.report-summary .box span { display: block; font-size: 1.2rem; font-weight: bold; margin-top: 5px; }
+.box.sale { background: var(--primary); }
+.box.paid { background: var(--success); }
+.box.debt { background: var(--danger); }
+
+.cart-container { background: white; border-radius: 10px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+table { width: 100%; border-collapse: collapse; }
+th { background: #f8f9fa; color: #555; padding: 10px; font-size: 14px; }
+td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+
+.payment-card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.debt-amount { color: var(--danger); font-size: 2.2rem; margin: 10px 0 20px 0; }
+.link-share-box { background: #fff; padding: 15px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 20px; }
+.danger-zone { margin-top: 40px; padding-top: 20px; border-top: 2px dashed #ddd; text-align: center; }
+
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; background: white;
+    display: flex; justify-content: space-around; padding: 10px 0;
+    border-top: 1px solid #eee; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+.nav-item { text-decoration: none; color: #999; display: flex; flex-direction: column; align-items: center; font-size: 11px; gap: 5px; }
+.nav-item i { font-size: 20px; }
+.nav-item.active { color: var(--primary); font-weight: bold; }
+
+.modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); }
+.modal-content { background: #fff; margin: 20% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 15px; text-align: center; position: relative; }
+.close { position: absolute; left: 20px; top: 15px; font-size: 24px; cursor: pointer; color: #999; }
+
+#splash-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #1a1a2e; z-index: 5000;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+}
+.glow-text { color: var(--accent); font-size: 3rem; animation: pulse 2s infinite; text-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+.loader { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s infinite; margin-top: 20px; }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes pulse { 50% { opacity: 0.6; transform: scale(0.98); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================================
+   إعدادات الطباعة (Print) - تم تعديلها لعرض التقرير
+   ========================================================= */
+@media print {
+    body { background: white; color: black; }
+    
+    /* إخفاء كل ما لا نريده */
+    .bottom-nav, 
+    .login-overlay, 
+    .modal, 
+    .link-share-box, 
+    .danger-zone, 
+    .btn-icon, 
+    input, 
+    .form-grid,
+    #splash-screen,
+    .btn-xs,
+    button {
+        display: none !important;
+    }
+
+    /* تنسيق الهيدر للطباعة */
+    .app-header {
+        position: relative;
+        background: white;
+        color: black;
+        box-shadow: none;
+        border-bottom: 2px solid #000;
+        height: auto;
+        padding: 20px 0;
+    }
+    .app-header div { font-size: 24px; font-weight: bold; }
+
+    /* تنسيق المحتوى */
+    .app-section { display: block !important; padding: 0 !important; }
+    .container, .app-container { padding: 0; margin: 0; max-width: 100%; }
+    
+    /* جعل ألوان الصناديق مناسبة للطباعة (أبيض وأسود) */
+    .report-summary .box {
+        background: white !important;
+        color: black !important;
+        border: 1px solid #000;
+        box-shadow: none;
+    }
+
+    /* توسيع الجدول */
+    .transactions-list {
+        margin-top: 20px;
+    }
+    
+    /* إخفاء الشاشات الأخرى التي ليست نشطة إذا كنا نطبع من لوحة الادمن */
+    #tab-customers, #tab-invoice, #tab-payment { display: none !important; }
+    #tab-reports { display: block !important; }
+}
